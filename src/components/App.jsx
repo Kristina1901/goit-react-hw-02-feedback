@@ -11,7 +11,7 @@ export const App = () => {
         color: '#010101'
       }}
     >
-     <Static/>
-    </div>
+      <Static />
+      </div>
   );
 };

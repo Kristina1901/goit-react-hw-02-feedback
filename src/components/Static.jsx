@@ -1,40 +1,31 @@
 import React, { Component } from "react";
-
+import Statistics from './Statistics';
+import FeedbackOptions from "./FeedbackOptions";
+import Section from './Section';
+import Notification from './Notification'
 export default class Static extends Component {
   constructor(props) {
     super(props);
     this.state = {
-       good: 0,
-       neutral: 0,
-       bad: 0
+      good: 0,
+      neutral: 0,
+      bad: 0
     }
     
     // Эта привязка обязательна для работы `this` в колбэке.
-    this.handleClickGood = this.handleClickGood.bind(this);
-    this.handleClickNeutral = this.handleClickNeutral.bind(this);
-    this.handleClickBad = this.handleClickBad.bind(this);
+    this.handleClick = this.handleClick.bind(this);
+    
     
   }
   
-  handleClickGood() {
-   this.setState((state) => {
-  return {good: state.good + 1};
-});
-   
-  }
-   handleClickNeutral() {
-   this.setState((state) => {
-  return {neutral: state.neutral + 1};
-});
-   
-  }
-   handleClickBad() {
-   this.setState((state) => {
-  return {bad: state.bad + 1};
-});
-   
-  }
-  countTotalFeedback (){
+  handleClick = name => {
+    this.setState(prevState => {
+      return { [name]: prevState[name] + 1 };
+    });
+  };
+  
+  
+  countTotalFeedback() {
     return this.state.bad + this.state.good + this.state.neutral;
    
   }
@@ -48,31 +39,31 @@ export default class Static extends Component {
       return Math.round(this.state.good / total * 100)
     }
   }
-
+  
   render() {
-    const {bad, good, neutral} = this.state
+    const { bad, good, neutral } = this.state
     const total = this.countTotalFeedback()
     const percentage = this.countPositiveFeedbackPercentage()
-    return (
-      <div>
-        <span>Please leave feedback</span>
-        <button type="button" onClick={this.handleClickGood}>
-          Good
-        </button>
-        <button type="button" onClick={this.handleClickNeutral}>
-          Neutral 
-        </button>
-         <button type="button" onClick={this.handleClickBad}>
-          Bad 
-        </button>
-        <span>Statistics</span>
-        <span>Good:</span><span>{good}</span>
-        <span>Neutral:</span><span>{neutral}</span>
-        <span>Bad:</span><span>{bad}</span>
-        <span>Total:{total}</span>
-        <span>Positive feedback:{percentage}%</span>
-      </div>
+    if (total > 0) {
+      return (
+        <div>
+            <Section title="Please leave feedback">
+            <FeedbackOptions options={Object.keys(this.state)} onLeaveFeedback={this.handleClick} />
+            <Statistics good={good} neutral={neutral} bad={bad} total={total} positivePercentage={percentage} />
+            </Section>
+        </div>
       
-    );
+      );
+    }
+    else {
+       return (
+      <div>
+            <Section title="Please leave feedback">
+            <FeedbackOptions options={Object.keys(this.state)} onLeaveFeedback={this.handleClick} />
+            <Notification message="There is no feedback" />
+          </Section>
+        </div>
+       )
+    }
   }
 }
