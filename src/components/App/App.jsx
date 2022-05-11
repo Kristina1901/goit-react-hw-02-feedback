@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Statistics from './Statistics';
-import FeedbackOptions from './FeedbackOptions';
-import Section from './Section';
-import Notification from './Notification';
-export default class Static extends Component {
+import Statistics from '../Statistics/Statistics';
+import FeedbackOptions from '../FeedbackOptions/FeedbackOptions';
+import Section from '../Section/Section';
+import Notification from '../Notification/Notification';
+import s from '../App/App.module.css';
+export default class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -39,14 +40,14 @@ export default class Static extends Component {
     const { bad, good, neutral } = this.state;
     const total = this.countTotalFeedback();
     const percentage = this.countPositiveFeedbackPercentage();
-    if (total > 0) {
-      return (
-        <div>
-          <Section title="Please leave feedback">
-            <FeedbackOptions
-              options={Object.keys(this.state)}
-              onLeaveFeedback={this.handleClick}
-            />
+    return (
+      <div className={s.wrapper}>
+        <Section title="Please leave feedback">
+          <FeedbackOptions
+            options={Object.keys(this.state)}
+            onLeaveFeedback={this.handleClick}
+          />
+          {total > 0 ? (
             <Statistics
               good={good}
               neutral={neutral}
@@ -54,21 +55,11 @@ export default class Static extends Component {
               total={total}
               positivePercentage={percentage}
             />
-          </Section>
-        </div>
-      );
-    } else {
-      return (
-        <div>
-          <Section title="Please leave feedback">
-            <FeedbackOptions
-              options={Object.keys(this.state)}
-              onLeaveFeedback={this.handleClick}
-            />
+          ) : (
             <Notification message="There is no feedback" />
-          </Section>
-        </div>
-      );
-    }
+          )}
+        </Section>
+      </div>
+    );
   }
 }

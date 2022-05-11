@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import s from '../css/FeedbackOptions.module.css';
+import s from '../FeedbackOptions/FeedbackOptions.module.css';
 export default function FeedbackOptions({ options, onLeaveFeedback }) {
   return (
     <div>
