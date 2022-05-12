@@ -47,7 +47,9 @@ export default class App extends Component {
             options={Object.keys(this.state)}
             onLeaveFeedback={this.handleClick}
           />
-          {total > 0 ? (
+        </Section>
+        {total > 0 ? (
+          <Section>
             <Statistics
               good={good}
               neutral={neutral}
@@ -55,10 +57,12 @@ export default class App extends Component {
               total={total}
               positivePercentage={percentage}
             />
-          ) : (
+          </Section>
+        ) : (
+          <Section>
             <Notification message="There is no feedback" />
-          )}
-        </Section>
+          </Section>
+        )}
       </div>
     );
   }
